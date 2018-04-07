@@ -1,9 +1,15 @@
+//Assignment Name: P4 Dictionary Graph
+//File Name: Graph.java
+//Author: Neal Pongmorrakot
+//Email: pongmorrakot@wisc.edu
+//Due Date: Apr 16, 2018
+//Other Source: -
+//Known Bugs: None
+
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Undirected and unweighed graph implementation
@@ -15,7 +21,9 @@ import java.util.Collections;
  */
 public class Graph<E> implements GraphADT<E> {
     
+    //contains all vertices in unsorted order
     HashSet<E> vertices;
+    //contains adjacency lists of all vertices
     HashMap<E,ArrayList<E>> edge;
     /**
      * Instance variables and constructors
@@ -45,7 +53,6 @@ public class Graph<E> implements GraphADT<E> {
     @Override
     public E removeVertex(E vertex) {
         if (vertex == null) return null;
-        
         if(vertices.remove(vertex)) {
           //remove the vertex from adjacency lists of other vertices
             for (E i : edge.keySet()) {
@@ -64,7 +71,9 @@ public class Graph<E> implements GraphADT<E> {
     public boolean addEdge(E vertex1, E vertex2) {
         if(!(vertices.contains(vertex1) && vertices.contains(vertex2)) || vertex1.equals(vertex2)) return false;
         else {
+            //adjacency list for vertex1
             ArrayList<E> adjList1;
+            //adjacency list for vertex2
             ArrayList<E> adjList2;
             if(edge.containsKey(vertex1) && edge.containsKey(vertex2)) {
                 adjList1 = edge.get(vertex1);
@@ -96,7 +105,9 @@ public class Graph<E> implements GraphADT<E> {
     public boolean removeEdge(E vertex1, E vertex2) {
         if(!(vertices.contains(vertex1) && vertices.contains(vertex2)) || vertex1.equals(vertex2)) return false;
         else {
+            //adjacency list for vertex1
             ArrayList<E> adjList1;
+            //adjacency list for vertex2
             ArrayList<E> adjList2;
             adjList1 = edge.get(vertex1);
             adjList2 = edge.get(vertex2);
@@ -123,6 +134,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public Iterable<E> getNeighbors(E vertex) {
+        //adjacency list for vertex
         ArrayList<E> adjList;
         if(vertex == null || !(vertices.contains(vertex)) || (edge.get(vertex) == null)) {
             adjList = new ArrayList<E>();
