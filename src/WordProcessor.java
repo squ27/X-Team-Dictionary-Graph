@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -65,7 +66,8 @@ public class WordProcessor {
 		 * 		streamOfLines.map(...).filter(a -> ...).map(...) and so on
 		 */
 		
-		return null;
+		return Files.lines(Paths.get(filepath)).map(String::trim)
+											   .filter((a)->(!a.equals("")));
 	}
 	
 	/**
@@ -86,7 +88,43 @@ public class WordProcessor {
 	 * @return true if word1 and word2 are adjacent else false
 	 */
 	public static boolean isAdjacent(String word1, String word2) {
-		return false;	
+		if(word1 == null || word2 == null) throw new IllegalArgumentException();
+		
+		word1 = word1.toLowerCase();
+		word2 = word2.toLowerCase();
+		
+		if(word1.equals(word2)) return false;
+		if(Math.abs(word1.length()-word2.length()) > 1) return false;
+		
+		boolean diff = false;
+		if(word1.length() == word2.length()) {
+			for(int i = 0; i < word1.length(); i++) {
+				if(word1.charAt(i) == word2.charAt(i))
+					continue;
+				else {
+					if(diff) return false;
+					else diff = true;
+				}
+			}
+		}else {
+			if(word1.length() < word2.length()) {
+				String temp = word1;
+				word1 = word2;
+				word2 = temp;
+			}
+			
+			for(int i = 0; i < word2.length(); i++) {
+				if(diff) {
+					if(word1.charAt(i+1) == word2.charAt(i)) continue;
+					else return false;
+				}else {
+					if(word1.charAt(i) == word2.charAt(i)) continue;
+					else { diff = true; i--;}
+				}
+			}
+		}
+		
+		return true;	
 	}
 	
 }

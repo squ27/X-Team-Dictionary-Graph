@@ -332,5 +332,24 @@ public class GraphTest {
 		}
 		assertEquals("num of vertices in the graph", numOfVertices-2, verticesCount);
 	}
-
+	
+	@Test
+	public final void examAdjacency() {
+		String[] words = {"Wheat", "Heat", "Hot", "Hat", "At", "Hit", "It", "Cat", "Eat"};
+		boolean[][] expected = {{false, true,  false, false, false, false, false, false, false},
+								{true,  false, false, true,  false, false, false, false, true },
+								{false, false, false, true,  false, true,  false, false, false},
+								{false, true,  true,  false, true,  true,  false, true,  true },
+								{false, false, false, true,  false, false, true,  true,  true },
+								{false, false, true,  true,  false, false, true,  false, false},
+								{false, false, false, false, true,  true,  false, false, false},
+								{false, false, false, true,  true,  false, false, false, true },
+								{false, true,  false, true,  true,  false, false, true,  false}};
+		for(int i = 0; i < words.length; i++) {
+			for(int j = 0; j < words.length; j++) {
+				assertEquals(words[i] + (expected[i][j]?" is ":" isn't ") + "adjacent to " + words[j], expected[i][j],
+						WordProcessor.isAdjacent(words[i], words[j]));
+			}
+		}
+	}
 }
