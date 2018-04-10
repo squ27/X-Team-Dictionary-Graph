@@ -67,7 +67,8 @@ public class WordProcessor {
 		 */
 		
 		return Files.lines(Paths.get(filepath)).map(String::trim)
-											   .filter((a)->(!a.equals("")));
+											   .filter((a)->(a != null && !a.equals("")))
+											   .map(String::toUpperCase);
 	}
 	
 	/**
