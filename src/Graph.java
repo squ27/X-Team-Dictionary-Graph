@@ -1,6 +1,10 @@
 //Assignment Name: P4 Dictionary Graph
 //File Name: Graph.java
+<<<<<<< HEAD
 //Author: Neal Pongmorrakot
+=======
+//Author: X-Team 67/Neal Pongmorrakot
+>>>>>>> NealPongmorrakot
 //Email: pongmorrakot@wisc.edu
 //Due Date: Apr 16, 2018
 //Other Source: -
