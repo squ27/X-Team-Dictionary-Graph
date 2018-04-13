@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -116,6 +117,19 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
+       ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(); //creating an array list that has an arraylist in each index that holds the neighbors of the current vertex
+       ArrayList<String> vertices = (ArrayList<String>) graph.getAllVertices(); //making an arraylist of all vertices to traverse through 
+       for(int i = 0; i < vertices.size(); i++) {
+           paths.add(i, (ArrayList<String>) graph.getNeighbors(vertices.get(i))); //puts the neighbors of each vertex in a position of the arraylist
+       }
+       
+       
+       for(String vertex : vertices) {
+           ArrayList<String> v1 = (ArrayList<String>) graph.getNeighbors(vertex);
+         
+       }
+        
+        
         List<String> words = new ArrayList<>();
         words.add(word1);
         
@@ -177,6 +191,6 @@ public class GraphProcessor {
      * Any shortest path algorithm can be used (Djikstra's or Floyd-Warshall recommended).
      */
     public void shortestPathPrecomputation() {
-    
+        
     }
 }
