@@ -1,3 +1,5 @@
+package xteamp4;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -67,25 +69,28 @@ public class GraphProcessor {
      * @param filepath file path to the dictionary
      * @return Integer the number of vertices (words) added; return -1 if file not found or if encountering other exceptions
      */
-  public Integer populateGraph(String filepath) {
+    public Integer populateGraph(String filepath) {
        boolean edgeNeeded = false;
+       String word;
        Integer numVertices = 0;
         try {
             words = WordProcessor.getWordStream(filepath);
-            String[] graphVertices = (String[]) words.toArray();
-            for(String word : graphVertices) {
+            Object[] graphVertices = words.toArray();
+            for(Object words : graphVertices) {
+                word = (String) words;
                 numVertices++;
                 graph.addVertex(word); //adds all the strings to the graph
             }
             
             for(int i = 0; i < graphVertices.length-1; i++) {
                 for(int j = 1; j < graphVertices.length; j++) {
-                   edgeNeeded = WordProcessor.isAdjacent(graphVertices[i], graphVertices[j]); //checking each word with each other word
+                   edgeNeeded = WordProcessor.isAdjacent((String)graphVertices[i], (String)graphVertices[j]); //checking each word with each other word
                    if(edgeNeeded) {
-                       graph.addEdge(graphVertices[i], graphVertices[j]);
+                       graph.addEdge((String)graphVertices[i], (String)graphVertices[j]);
                    }
                 }
             }
+            return numVertices;
             
         } catch (NullPointerException e) {
             return -1;
@@ -93,7 +98,6 @@ public class GraphProcessor {
            return -1;
         }
         
-        return numVertices;
     
     }
 
@@ -120,42 +124,10 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
-       ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(); //creating an array list that has an arraylist in each index that holds the neighbors of the current vertex
-       ArrayList<String> vertices = (ArrayList<String>) graph.getAllVertices(); //making an arraylist of all vertices to traverse through 
-       for(int i = 0; i < vertices.size(); i++) {
-           paths.add(i, (ArrayList<String>) graph.getNeighbors(vertices.get(i))); //puts the neighbors of each vertex in a position of the arraylist
-       }
-       
-       
-       for(String vertex : vertices) {
-           ArrayList<String> v1 = (ArrayList<String>) graph.getNeighbors(vertex);
-         
-       }
-        
-        
-        List<String> words = new ArrayList<>();
-        words.add(word1);
-        
-        if(word1.equals(word2)) { //if word1 = word2, then there is an empty list
-            return null;
-        }
-        
-        Iterable<String> neighbors = graph.getNeighbors(word1);
-        for(String s : neighbors) {
-            if(s.equals(word2)) { //if word1 and word2 are connected 
-                words.add(word2);
-                return words;
-            }
-            else if(graph.isAdjacent(word2, s)) { //if s is connected to both word1 and word2
-                words.add(s);
-                words.add(word2);
-                return words;
-            }
-            else {} //need to look to s's neighbors
-        }
-        
+      
+     
         return null;
-    
+
     }
     
 
@@ -180,8 +152,9 @@ public class GraphProcessor {
      * @return Integer distance
      */
     public Integer getShortestDistance(String word1, String word2) {
-        Integer count = -1;
-        List<String> shortest = getShortestPath(word1, word2); //call th previous method then count edges
+        Integer count = 0;
+        List<String> shortest = getShortestPath(word1, word2); //call the previous method then count edges
+        if(word1.equals(word2) || shortest == null) return -1;
         for(String s : shortest) {
             count++;
         }
@@ -194,6 +167,6 @@ public class GraphProcessor {
      * Any shortest path algorithm can be used (Djikstra's or Floyd-Warshall recommended).
      */
     public void shortestPathPrecomputation() {
-        
+     
     }
 }
