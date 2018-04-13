@@ -199,11 +199,17 @@ public class GraphProcessorTest {
         + String.join(",", p) + " ]");
     }
     
-    @Test
+      @Test
     public void test_14_pathWithNoPath() {
-        
+        testFile("apple,octopus,drag");
+        GraphProcessor g = new GraphProcessor();
+        g.populateGraph(fileName);
+        boolean flag = false;
+        Integer i = g.getShortestDistance("apple", "octopus");
+        flag = (i != -1);
+        if (flag) fail("Expected -1, got " + i);
     }
-    
+        
     @Test
     /**
      * Tests that two words that are not adjacent do not return as adjacent.
