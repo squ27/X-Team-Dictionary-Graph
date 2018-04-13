@@ -60,7 +60,13 @@ public class GraphProcessorTest {
     
     @Test
     public final void test_1_shortestPathOfZero() {
-            
+        testFile("cat");
+        GraphProcessor g = new GraphProcessor();
+        g.populateGraph(fileName);
+        boolean flag = false;
+        List<String> s = g.getShortestPath("cat", "cat");
+        flag = (s != null);
+        if (flag) fail("Expected null, got " + s);
     }
     
     @Test
@@ -70,9 +76,10 @@ public class GraphProcessorTest {
         g.populateGraph(fileName);
         boolean flag = false;
         int n = g.getShortestDistance("cat","cat");
-        flag = (n!=0);
-        if (flag) fail("Expected 0, got " + n );
+        flag = (n!=-1); 
+        if (flag) fail("Expected -1, got " + n );
     }
+    
     
     @Test
     public final void test_3_populateGraphOfZero() {
