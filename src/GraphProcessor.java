@@ -67,12 +67,14 @@ public class GraphProcessor {
      * @param filepath file path to the dictionary
      * @return Integer the number of vertices (words) added; return -1 if file not found or if encountering other exceptions
      */
-    public Integer populateGraph(String filepath) {
+  public Integer populateGraph(String filepath) {
        boolean edgeNeeded = false;
+       Integer numVertices = 0;
         try {
             words = WordProcessor.getWordStream(filepath);
             String[] graphVertices = (String[]) words.toArray();
             for(String word : graphVertices) {
+                numVertices++;
                 graph.addVertex(word); //adds all the strings to the graph
             }
             
@@ -85,12 +87,13 @@ public class GraphProcessor {
                 }
             }
             
+        } catch (NullPointerException e) {
+            return -1;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           return -1;
         }
         
-        return 0;
+        return numVertices;
     
     }
 
