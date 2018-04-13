@@ -100,6 +100,7 @@ public class WordProcessor {
 		// Checks if the words are more than 1 letter apart, because then they are not adjacent
 		
 		boolean diff = false;
+		//tracks if the difference between the words makes them not adjacent
 		if(word1.length() == word2.length()) { 
 		    // If the two words are the same length
 			for(int i = 0; i < word1.length(); i++) {
@@ -114,12 +115,14 @@ public class WordProcessor {
 			}
 		}else {
 			if(word1.length() < word2.length()) {
-			    // If the two words are one letter apart
+			    // If the word1 is one letter shorter than word2, set word1 to the value of word2
+			    //and set word2 to value of word1 before moving to the next instruction 
 				String temp = word1;
 				word1 = word2;
 				word2 = temp;
 			}
-			
+			//checks if there is more than one letter differing between the two words 
+			//if there is will return false, the words are not adjacent 
 			for(int i = 0; i < word2.length(); i++) {
 				if(diff) {
 					if(word1.charAt(i+1) == word2.charAt(i)) continue;
