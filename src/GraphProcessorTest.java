@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,11 +17,19 @@ import org.junit.Test;
 public class GraphProcessorTest {
     
     private GraphProcessor g;
-    private final static String fileName = "xTeam67JunitTestFile";
+    private static File tempFile; // Temporary file to be created
+    private static String fileName; // The path name of the temporary file created
     
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        try {
+            tempFile = File.createTempFile("x67",".txt"); // Creates the temporary file
+            fileName = tempFile.getCanonicalPath(); // Sets fileName to the path of the temp file
+        }
+        catch (IOException e) {
+            
+        }
     }
 
     @AfterClass
@@ -38,12 +47,14 @@ public class GraphProcessorTest {
     private void testFile(String s) {
         String strings[] = s.split(",");
         try {
-            PrintWriter f = new PrintWriter(fileName);
+            PrintWriter f = new PrintWriter(tempFile);
             for (int i = 0; i < strings.length; i++) {
                 f.println(strings[i]);
             }
         }
         catch (FileNotFoundException e ) {
+        }
+        catch (IOException e) {    
         }
     }
     
