@@ -81,10 +81,16 @@ public class GraphProcessorTest {
     }
     
     
-    @Test
+      @Test
     public final void test_3_populateGraphOfZero() {
-        
+        testFile(null);
+        GraphProcessor g = new GraphProcessor();
+        boolean flag = false;
+        Integer i = g.populateGraph(fileName);
+        flag = (i != -1);
+        if (flag) fail("Expected -1, got " + i);
     }
+    
     
     @Test
     public final void test_4_populateGraphOfOne() {
