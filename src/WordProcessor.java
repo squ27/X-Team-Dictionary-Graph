@@ -90,25 +90,31 @@ public class WordProcessor {
 	 */
 	public static boolean isAdjacent(String word1, String word2) {
 		if(word1 == null || word2 == null) throw new IllegalArgumentException();
-		
-		word1 = word1.toLowerCase();
+		// If either word given is null then it throws IllegalArgumentException
+		word1 = word1.toLowerCase(); 
 		word2 = word2.toLowerCase();
 		
 		if(word1.equals(word2)) return false;
+		// If the words are the same, they are not adjacent
 		if(Math.abs(word1.length()-word2.length()) > 1) return false;
+		// Checks if the words 1 letter apart, because then they are not adjacent
 		
 		boolean diff = false;
-		if(word1.length() == word2.length()) {
+		if(word1.length() == word2.length()) { 
+		    // If the two words are the same length
 			for(int i = 0; i < word1.length(); i++) {
 				if(word1.charAt(i) == word2.charAt(i))
 					continue;
+				    // Steps through if the letters are the same
 				else {
-					if(diff) return false;
-					else diff = true;
+					if(diff) return false; 
+					// If there is more than one letter found that varies, then it is not adjacent
+					else diff = true; // If only one letter differs than it is adjacent
 				}
 			}
 		}else {
 			if(word1.length() < word2.length()) {
+			    // If the two words are one letter apart
 				String temp = word1;
 				word1 = word2;
 				word2 = temp;
