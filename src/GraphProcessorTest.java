@@ -13,6 +13,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Junit test class to test class GraphProcessor and WordProcessor
+ */
 
 public class GraphProcessorTest {
     
@@ -44,6 +47,11 @@ public class GraphProcessorTest {
     public void tearDown() throws Exception {
     }
     
+    /**
+     * Takes a string of words and writes each word to a line of a temporary file.
+     * 
+     * @param s - A string of words separated by commas, each word to be written to a line
+     */
     private void testFile(String s) {
         String strings[] = s.split(",");
         try {
@@ -59,6 +67,10 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest path using getShortestPath 
+     * in GraphProcessor between two words that are the same is null
+     */
     public final void test_1_shortestPathOfZero() {
         testFile("cat");
         GraphProcessor g = new GraphProcessor();
@@ -70,6 +82,10 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest distance using the getShortestDistance test 
+     * in GraphProcessor between two words that are the same is -1
+     */
     public final void test_2_shortestDistanceOfZero() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -82,10 +98,9 @@ public class GraphProcessorTest {
     
     @Test
     public final void test_3_populateGraphOfZero() {
-        testFile(null);
         GraphProcessor g = new GraphProcessor();
         boolean flag = false;
-        Integer i = g.populateGraph(fileName);
+        Integer i = g.populateGraph(null);
         flag = (i != -1);
         if (flag) fail("Expected -1, got " + i);
     }
@@ -121,6 +136,10 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest distance using the getShortestDistance test 
+     * in GraphProcessor between two words that are one change away from each other is 1
+     */
     public final void test_7_shortestDistanceOfOne() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -132,6 +151,10 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest distance using the getShortestDistance test 
+     * in GraphProcessor between two words that are two changes away from each other is 2
+     */
     public void test_8_shortestDistanceOfTwo() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -143,6 +166,10 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest distance using the getShortestDistance test 
+     * in GraphProcessor between two words that are three changes away from each other is 3
+     */
     public void test_9_shortestDistanceOfThree() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -154,6 +181,11 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest path using the getShortestPath test 
+     * in GraphProcessor between two words that are one change away returns the correct list 
+     * with two words
+     */
     public void test_11_shortestPathOfOne() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -167,6 +199,11 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest path using the getShortestPath test 
+     * in GraphProcessor between two words that are two changes away returns the correct list 
+     * with three words
+     */
     public void test_12_shortestPathOfTwo() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -182,6 +219,11 @@ public class GraphProcessorTest {
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest path using the getShortestPath test 
+     * in GraphProcessor between two words that are three changes away returns the correct list 
+     * with four words
+     */
     public void test_13_shortestPathOfThree() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
@@ -193,11 +235,15 @@ public class GraphProcessorTest {
         flag = flag || (!p.get(1).equals("hat"));
         flag = flag || (!p.get(2).equals("hate"));
         flag = flag || (!p.get(3).equals("hater"));
-        if (flag) fail("Expected [ cat,hat,hate ], got [ " 
+        if (flag) fail("Expected [ cat,hat,hate,hater ], got [ " 
         + String.join(",", p) + " ]");
     }
     
     @Test
+    /**
+     * Tests to make sure that the shortest path using the getShortestPath test 
+     * in GraphProcessor between two words that have no adjacency returns a -1.
+     */
     public void test_14_pathWithNoPath() {
         testFile("apple,octopus,drag");
         GraphProcessor g = new GraphProcessor();
@@ -257,8 +303,6 @@ public class GraphProcessorTest {
             boolean flag = false;
         }
         catch (IOException e) {
-        }
-        
-    }
-    
+        }   
+    }   
 }
