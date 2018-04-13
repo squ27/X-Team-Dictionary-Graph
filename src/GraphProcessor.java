@@ -41,6 +41,7 @@ public class GraphProcessor {
      * Graph which stores the dictionary words and their associated connections
      */
     private GraphADT<String> graph;
+    private Stream<String> words;
 
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
@@ -59,11 +60,35 @@ public class GraphProcessor {
      * 
      * For all possible pairs of vertices, finds if the pair of vertices is adjacent {@link WordProcessor#isAdjacent(String, String)}
      * If a pair is adjacent, adds an undirected and unweighted edge between the pair of vertices in the graph.
+     *
+     * Log any issues encountered (print the issue details)
      * 
      * @param filepath file path to the dictionary
-     * @return Integer the number of vertices (words) added
+     * @return Integer the number of vertices (words) added; return -1 if file not found or if encountering other exceptions
      */
     public Integer populateGraph(String filepath) {
+       boolean edgeNeeded = false;
+        try {
+            words = WordProcessor.getWordStream(filepath);
+            String[] graphVertices = (String[]) words.toArray();
+            for(String word : graphVertices) {
+                graph.addVertex(word); //adds all the strings to the graph
+            }
+            
+            for(int i = 0; i < graphVertices.length-1; i++) {
+                for(int j = 1; j < graphVertices.length; j++) {
+                   edgeNeeded = WordProcessor.isAdjacent(graphVertices[i], graphVertices[j]); //checking each word with each other word
+                   if(edgeNeeded) {
+                       graph.addEdge(graphVertices[i], graphVertices[j]);
+                   }
+                }
+            }
+            
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         return 0;
     
     }
@@ -79,18 +104,44 @@ public class GraphProcessor {
      *             neat
      *             wheat
      *             kit
+     *             
      *  shortest path between cat and wheat is the following list of words:
      *     [cat, hat, heat, wheat]
+     *
+     * If word1 = word2, List will be empty. 
+     * Both the arguments will always be present in the graph.
      * 
      * @param word1 first word
      * @param word2 second word
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
+        List<String> words = new ArrayList<>();
+        words.add(word1);
+        
+        if(word1.equals(word2)) { //if word1 = word2, then there is an empty list
+            return null;
+        }
+        
+        Iterable<String> neighbors = graph.getNeighbors(word1);
+        for(String s : neighbors) {
+            if(s.equals(word2)) { //if word1 and word2 are connected 
+                words.add(word2);
+                return words;
+            }
+            else if(graph.isAdjacent(word2, s)) { //if s is connected to both word1 and word2
+                words.add(s);
+                words.add(word2);
+                return words;
+            }
+            else {} //need to look to s's neighbors
+        }
+        
         return null;
     
     }
     
+
     /**
      * Gets the distance of the shortest path between word1 and word2
      * 
@@ -103,13 +154,21 @@ public class GraphProcessor {
      *             kit
      *  distance of the shortest path between cat and wheat, [cat, hat, heat, wheat]
      *   = 3 (the number of edges in the shortest path)
+     *
+     * Distance = -1 if no path found between words (true also for word1=word2)
+     * Both the arguments will always be present in the graph.
      * 
      * @param word1 first word
      * @param word2 second word
      * @return Integer distance
      */
     public Integer getShortestDistance(String word1, String word2) {
-        return null;
+        Integer count = -1;
+        List<String> shortest = getShortestPath(word1, word2); //call th previous method then count edges
+        for(String s : shortest) {
+            count++;
+        }
+        return count;
     }
     
     /**
