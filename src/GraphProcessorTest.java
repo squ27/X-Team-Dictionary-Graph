@@ -80,8 +80,7 @@ public class GraphProcessorTest {
         if (flag) fail("Expected -1, got " + n );
     }
     
-    
-      @Test
+    @Test
     public final void test_3_populateGraphOfZero() {
         testFile(null);
         GraphProcessor g = new GraphProcessor();
@@ -90,7 +89,6 @@ public class GraphProcessorTest {
         flag = (i != -1);
         if (flag) fail("Expected -1, got " + i);
     }
-    
     
     @Test
     public final void test_4_populateGraphOfOne() {
@@ -199,7 +197,7 @@ public class GraphProcessorTest {
         + String.join(",", p) + " ]");
     }
     
-      @Test
+    @Test
     public void test_14_pathWithNoPath() {
         testFile("apple,octopus,drag");
         GraphProcessor g = new GraphProcessor();
@@ -209,7 +207,7 @@ public class GraphProcessorTest {
         flag = (i != -1);
         if (flag) fail("Expected -1, got " + i);
     }
-        
+    
     @Test
     /**
      * Tests that two words that are not adjacent do not return as adjacent.
@@ -241,7 +239,7 @@ public class GraphProcessorTest {
      * Tests that two words that are adjacent, the later with one subtraction,
      * are still considered adjacent.
      */
-    public void test_17_isAdjacentSubtraction() {
+    public void test_18_isAdjacentSubtraction() {
         
     }
     
