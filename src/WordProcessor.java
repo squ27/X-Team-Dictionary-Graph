@@ -97,7 +97,7 @@ public class WordProcessor {
 		if(word1.equals(word2)) return false;
 		// If the words are the same, they are not adjacent
 		if(Math.abs(word1.length()-word2.length()) > 1) return false;
-		// Checks if the words 1 letter apart, because then they are not adjacent
+		// Checks if the words are more than 1 letter apart, because then they are not adjacent
 		
 		boolean diff = false;
 		if(word1.length() == word2.length()) { 
