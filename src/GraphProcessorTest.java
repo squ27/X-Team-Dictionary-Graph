@@ -213,7 +213,11 @@ public class GraphProcessorTest {
      * Tests that two words that are not adjacent do not return as adjacent.
      */
     public void test_15_isAdjacentFalse() {
-        
+        WordProcessor g = new WordProcessor();
+        boolean flag = false;
+        flag = g.isAdjacent("cat", "dog");
+        System.out.println(flag);
+        if (flag) fail("Expected: false Got:" + flag);
     }
     
     @Test
