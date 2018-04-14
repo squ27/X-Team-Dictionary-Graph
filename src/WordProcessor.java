@@ -90,30 +90,39 @@ public class WordProcessor {
 	 */
 	public static boolean isAdjacent(String word1, String word2) {
 		if(word1 == null || word2 == null) throw new IllegalArgumentException();
-		
-		word1 = word1.toLowerCase();
+		// If either word given is null then it throws IllegalArgumentException
+		word1 = word1.toLowerCase(); 
 		word2 = word2.toLowerCase();
 		
 		if(word1.equals(word2)) return false;
+		// If the words are the same, they are not adjacent
 		if(Math.abs(word1.length()-word2.length()) > 1) return false;
+		// Checks if the words are more than 1 letter apart, because then they are not adjacent
 		
 		boolean diff = false;
-		if(word1.length() == word2.length()) {
+		//tracks if the difference between the words makes them not adjacent
+		if(word1.length() == word2.length()) { 
+		    // If the two words are the same length
 			for(int i = 0; i < word1.length(); i++) {
 				if(word1.charAt(i) == word2.charAt(i))
 					continue;
+				    // Steps through if the letters are the same
 				else {
-					if(diff) return false;
-					else diff = true;
+					if(diff) return false; 
+					// If there is more than one letter found that varies, then it is not adjacent
+					else diff = true; // If only one letter differs than it is adjacent
 				}
 			}
 		}else {
 			if(word1.length() < word2.length()) {
+			    // If the word1 is one letter shorter than word2, set word1 to the value of word2
+			    //and set word2 to value of word1 before moving to the next instruction 
 				String temp = word1;
 				word1 = word2;
 				word2 = temp;
 			}
-			
+			//checks if there is more than one letter differing between the two words 
+			//if there is will return false, the words are not adjacent 
 			for(int i = 0; i < word2.length(); i++) {
 				if(diff) {
 					if(word1.charAt(i+1) == word2.charAt(i)) continue;
