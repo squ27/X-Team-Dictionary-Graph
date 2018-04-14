@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Stream;
@@ -55,7 +56,7 @@ public class GraphProcessorTest {
     private void testFile(String s) {
         String strings[] = s.split(",");
         try {
-            PrintWriter f = new PrintWriter(tempFile);
+            PrintStream f = new PrintStream(tempFile);
             for (int i = 0; i < strings.length; i++) {
                 f.println(strings[i]);
             }
@@ -77,8 +78,8 @@ public class GraphProcessorTest {
         g.populateGraph(fileName);
         boolean flag = false;
         List<String> s = g.getShortestPath("cat", "cat");
-        flag = (s != null);
-        if (flag) fail("Expected null, got " + s);
+        flag = (s.size() != 0);
+        if (flag) fail("Expected empty list, got " + s);
     }
     
     @Test
