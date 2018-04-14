@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +45,8 @@ public class GraphProcessor {
      */
     private GraphADT<String> graph;
     private Stream<String> words;
-
+    private ArrayList<String> wordIndex;
+    private List<String>[][] shortestPath;
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
      */
@@ -69,9 +72,10 @@ public class GraphProcessor {
      */
     public Integer populateGraph(String filepath) {
        boolean edgeNeeded = false;
+       String[] graphVertices;
         try {
             words = WordProcessor.getWordStream(filepath);
-            String[] graphVertices = (String[]) words.toArray();
+            graphVertices =  words.toArray(String[]::new);
             for(String word : graphVertices) {
                 graph.addVertex(word); //adds all the strings to the graph
             }
@@ -88,9 +92,13 @@ public class GraphProcessor {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return -1;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	return -1;
         }
-        
-        return 0;
+        shortestPathPrecomputation();
+        return graphVertices.length;
     
     }
 
@@ -117,41 +125,51 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
-       ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(); //creating an array list that has an arraylist in each index that holds the neighbors of the current vertex
-       ArrayList<String> vertices = (ArrayList<String>) graph.getAllVertices(); //making an arraylist of all vertices to traverse through 
-       for(int i = 0; i < vertices.size(); i++) {
-           paths.add(i, (ArrayList<String>) graph.getNeighbors(vertices.get(i))); //puts the neighbors of each vertex in a position of the arraylist
-       }
-       
-       
-       for(String vertex : vertices) {
-           ArrayList<String> v1 = (ArrayList<String>) graph.getNeighbors(vertex);
-         
-       }
-        
-        
-        List<String> words = new ArrayList<>();
-        words.add(word1);
-        
-        if(word1.equals(word2)) { //if word1 = word2, then there is an empty list
-            return null;
-        }
-        
-        Iterable<String> neighbors = graph.getNeighbors(word1);
-        for(String s : neighbors) {
-            if(s.equals(word2)) { //if word1 and word2 are connected 
-                words.add(word2);
-                return words;
-            }
-            else if(graph.isAdjacent(word2, s)) { //if s is connected to both word1 and word2
-                words.add(s);
-                words.add(word2);
-                return words;
-            }
-            else {} //need to look to s's neighbors
-        }
-        
-        return null;
+//       ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(); //creating an array list that has an arraylist in each index that holds the neighbors of the current vertex
+//       ArrayList<String> vertices = (ArrayList<String>) graph.getAllVertices(); //making an arraylist of all vertices to traverse through 
+//       for(int i = 0; i < vertices.size(); i++) {
+//           paths.add(i, (ArrayList<String>) graph.getNeighbors(vertices.get(i))); //puts the neighbors of each vertex in a position of the arraylist
+//       }
+//       
+//       
+//       for(String vertex : vertices) {
+//           ArrayList<String> v1 = (ArrayList<String>) graph.getNeighbors(vertex);
+//         
+//       }
+//        
+//        
+//        List<String> words = new ArrayList<>();
+//        words.add(word1);
+//        
+//        if(word1.equals(word2)) { //if word1 = word2, then there is an empty list
+//            return null;
+//        }
+//        
+//        Iterable<String> neighbors = graph.getNeighbors(word1);
+//        for(String s : neighbors) {
+//            if(s.equals(word2)) { //if word1 and word2 are connected 
+//                words.add(word2);
+//                return words;
+//            }
+//            else if(graph.isAdjacent(word2, s)) { //if s is connected to both word1 and word2
+//                words.add(s);
+//                words.add(word2);
+//                return words;
+//            }
+//            else {} //need to look to s's neighbors
+//        }
+//        
+    	word1 = word1.toUpperCase();
+    	word2 = word2.toUpperCase();
+    	if(word1.equals(word2)) return new ArrayList<String>();
+    	
+    	int index1 = wordIndex.indexOf(word1);
+    	int index2 = wordIndex.indexOf(word2);
+    	
+    	if(index1 < 0 || index2 < 0)
+    		throw new IllegalArgumentException("Word is not found in the graph. ");
+    	
+        return shortestPath[index1][index2];
     
     }
     
@@ -191,6 +209,170 @@ public class GraphProcessor {
      * Any shortest path algorithm can be used (Djikstra's or Floyd-Warshall recommended).
      */
     public void shortestPathPrecomputation() {
+    	Iterable<String> vertices = graph.getAllVertices();
+    	Iterator<String> vertex = vertices.iterator();
+    	wordIndex = new ArrayList<String>();
         
+    	while(vertex.hasNext())
+    		wordIndex.add(vertex.next());
+    	
+    	shortestPath = new ArrayList[wordIndex.size()][wordIndex.size()];
+    	
+    	for(int n = 0; n < wordIndex.size(); n++) {
+	    	ArrayList<heapNode> visited = new ArrayList<heapNode>();
+	    	int distance = 0;
+	    	minHeap mh = new minHeap(wordIndex.size());
+	    	String curWord = wordIndex.get(n);
+	    	heapNode curNode = new heapNode(curWord, 0, null);
+	    	mh.insert(curNode);
+	    	
+	    	while(visited.size() < wordIndex.size()) {
+	    		heapNode min = mh.getMin();
+	    		visited.add(min);
+	    		distance++;
+	    		heapNode[] nodeList = mh.getList();
+	    		for(heapNode i : nodeList) {
+	    			Iterable<String> neighbor = graph.getNeighbors(i.word);
+	    			if(neighbor == null)
+	    				continue;
+	    			Iterator<String> neighbors = neighbor.iterator();
+	    			point: while(neighbors.hasNext()){
+	    				String newWord = neighbors.next();
+	    				for(heapNode j : visited) {
+	    					if(j.word.equals(newWord))
+								continue point;
+	    				}
+	    				heapNode oldWord = mh.findNode(newWord);
+	    				if(oldWord == null)
+	    					mh.insert(new heapNode(newWord,distance,i));
+	    				else
+	    					if(oldWord.distance > distance)
+	    						oldWord.setDistance(i, distance);
+	    			}
+	    		}
+	    		mh.removeMin();
+	    	}
+	    	
+	    	for(int m = 0; m < visited.size(); m++) {
+	    		List<String> path = new ArrayList<String>();
+	    		heapNode pathNode = visited.get(m);
+	    		path.add(pathNode.word);
+	    		int destIndex = wordIndex.indexOf(pathNode.word);
+	    		while(pathNode.ances != null) {
+	    			pathNode = pathNode.ances;
+	    			path.add(0, pathNode.word);
+	    		}
+	    		shortestPath[n][destIndex] = path;
+	    	}
+    	}
+    }
+    
+    private class minHeap{
+    	private int size;
+    	private heapNode[] list;
+    	
+    	public minHeap(int a) {
+    		size = 0;
+    		list = new heapNode[a];
+    	}
+    	
+    	public boolean isEmpty() {
+    		return size == 0;
+    	}
+    	
+    	public heapNode getMin() {
+    		return list[0];
+    	}
+    	
+    	public void insert(heapNode a) {
+    		list[size] = a;
+    		insertHelper(size++);
+    	}
+    	
+    	private void insertHelper(int index) {
+    		if(index == 0) return;
+    		
+    		int parent = (index-1)/2;
+    		int diff = list[index].distance - list[parent].distance;
+    		
+    		if(diff < 0) {
+    			swap(index, parent);
+    			insertHelper(parent);
+    		}
+    	}
+    	
+    	public heapNode removeMin() {
+    		if(size == 1) return list[--size];
+    		heapNode temp = list[0];
+    		swap(0, --size);
+    		removeHelper(0);
+    		return temp;
+    	}
+    	
+    	private void removeHelper(int index) {
+    		int lc = 2*index+1;
+    		int rc = 2*index+2;
+    		
+    		if(lc >= size) return;
+    		if(rc >= size) {
+    			if(list[index].distance - list[lc].distance <= 0) return;
+    			else {
+    				swap(index, lc);
+    				removeHelper(lc);
+    			}
+    		}else {
+    			if(list[lc].distance - list[rc].distance <= 0) {
+    					if(list[index].distance - list[lc].distance <= 0) return;
+    					else {
+    						swap(index, lc);
+    						removeHelper(lc);
+    					}
+    			}else {
+    				if(list[index].distance - list[rc].distance <= 0) return;
+    				else {
+    					swap(index, rc);
+    					removeHelper(rc);
+    				}
+    			}
+    		}
+    	}
+    	
+    	public heapNode findNode(String word) {
+    		for(int i = 0; i < size; i++) {
+    			if(list[i].word == word) return list[i];
+    		}
+    		return null;
+    	}
+    	
+    	private void swap(int index1, int index2) {
+    		heapNode temp = list[index1];
+			list[index1] = list[index2];
+			list[index2] = temp;
+    	}
+    	
+    	public heapNode[] getList() {
+    		return Arrays.copyOf(list, size);
+    	}
+    }
+    
+    private class heapNode{
+    	public int distance;
+    	public String word;
+    	public heapNode ances;
+    	
+    	public heapNode(String a, int b, heapNode an) {
+    		distance = b;
+    		word = a;
+    		ances = an;
+    	}
+    	
+    	public void setDistance(heapNode an, int val) {
+    		distance = val;
+    		ances = an;
+    	}
+    	
+    	public String toString() {
+    		return word;
+    	}
     }
 }
