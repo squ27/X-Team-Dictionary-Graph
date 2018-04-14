@@ -192,8 +192,7 @@ public class GraphProcessor {
 	    	heapNode curNode = new heapNode(curWord, 0, null);
 	    	mh.insert(curNode);
 	    	
-	    	while(visited.size() < wordIndex.size()) {
-	    		if(mh.isEmpty()) break;
+	    	while(!mh.isEmpty()) {
 	    		heapNode min = mh.getMin();
 	    		visited.add(min);
 	    		distance++;
