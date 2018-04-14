@@ -127,8 +127,8 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
-    	word1 = word1.toUpperCase();
-    	word2 = word2.toUpperCase();
+    	word1 = word1.toLowerCase();
+    	word2 = word2.toLowerCase();
     	if(word1.equals(word2)) return new ArrayList<String>();
     	
     	int index1 = wordIndex.indexOf(word1);
@@ -137,7 +137,8 @@ public class GraphProcessor {
     	if(index1 < 0 || index2 < 0)
     		throw new IllegalArgumentException("Word is not found in the graph. ");
     	
-        return shortestPath[index1][index2];
+    	List<String> path = shortestPath[index1][index2];
+        return path;
     }
     
 
@@ -165,10 +166,7 @@ public class GraphProcessor {
         Integer count = 0;
         List<String> shortest = getShortestPath(word1, word2); //call the previous method then count edges
         if(word1.equals(word2) || shortest == null) return -1;
-        for(String s : shortest) {
-            count++;
-        }
-        return count;
+        return shortest.size()-1;
     }
     
     /**
@@ -195,6 +193,7 @@ public class GraphProcessor {
 	    	mh.insert(curNode);
 	    	
 	    	while(visited.size() < wordIndex.size()) {
+	    		if(mh.isEmpty()) break;
 	    		heapNode min = mh.getMin();
 	    		visited.add(min);
 	    		distance++;
