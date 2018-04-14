@@ -129,12 +129,19 @@ public class GraphProcessor {
     public List<String> getShortestPath(String word1, String word2) {
     	word1 = word1.toUpperCase();
     	word2 = word2.toUpperCase();
+    	
     	if(word1.equals(word2)) return new ArrayList<String>();
     	
     	int index1 = wordIndex.indexOf(word1);
     	int index2 = wordIndex.indexOf(word2);
     	
     	List<String> path = shortestPath[index1][index2];
+    	if(path != null) {
+        	for(int i = 0; i < path.size(); i++) {
+        	    path.set(i, path.get(i).toLowerCase()); 
+        	}
+    	}
+    	
         return path;
     }
     
