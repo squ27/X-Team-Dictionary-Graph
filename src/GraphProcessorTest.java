@@ -263,7 +263,6 @@ public class GraphProcessorTest {
         WordProcessor g = new WordProcessor();
         boolean flag = false;
         flag = g.isAdjacent("cat", "dog");
-        System.out.println(flag);
         if (flag) fail("Expected: false Got:" + flag);
     }
     
