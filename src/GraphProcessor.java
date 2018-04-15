@@ -149,7 +149,7 @@ public class GraphProcessor {
     	
     	int index1 = wordIndex.indexOf(word1);
     	int index2 = wordIndex.indexOf(word2);
-    	
+
     	List<String> path = shortestPath[index1][index2];		//if they are not equal, return the shortest path
         return path;
     }
