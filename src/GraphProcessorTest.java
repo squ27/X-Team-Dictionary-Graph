@@ -187,16 +187,16 @@ public class GraphProcessorTest {
      * in GraphProcessor between two words that are one change away returns the correct list 
      * with two words
      */
-    public void test_11_shortestPathOfOne() {
+    public void test_10_shortestPathOfOne() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
         g.populateGraph(fileName);
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hat");
         flag = flag || (p.size() != 2);
-        flag = flag || (!p.get(0).equals("CAT"));
-        flag = flag || (!p.get(1).equals("HAT"));
-        if (flag) fail("Expected [ CAT,HAT ], got [ " + String.join(",", p) + " ]");
+        flag = flag || (!p.get(0).equals("cat"));
+        flag = flag || (!p.get(1).equals("hat"));
+        if (flag) fail("Expected [ cat,hat ], got [ " + String.join(",", p) + " ]");
     }
     
     @Test
@@ -205,17 +205,17 @@ public class GraphProcessorTest {
      * in GraphProcessor between two words that are two changes away returns the correct list 
      * with three words
      */
-    public void test_12_shortestPathOfTwo() {
+    public void test_11_shortestPathOfTwo() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
         g.populateGraph(fileName);
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hate");
         flag = flag || (p.size() != 3);
-        flag = flag || (!p.get(0).equals("CAT"));
-        flag = flag || (!p.get(1).equals("HAT"));
-        flag = flag || (!p.get(2).equals("HATE"));
-        if (flag) fail("Expected [ CAT,HAT,HATE ], got [ " 
+        flag = flag || (!p.get(0).equals("cat"));
+        flag = flag || (!p.get(1).equals("hat"));
+        flag = flag || (!p.get(2).equals("hate"));
+        if (flag) fail("Expected [ cat,hat,hate ], got [ " 
         + String.join(",", p) + " ]");
     }
     
@@ -225,18 +225,18 @@ public class GraphProcessorTest {
      * in GraphProcessor between two words that are three changes away returns the correct list 
      * with four words
      */
-    public void test_13_shortestPathOfThree() {
+    public void test_12_shortestPathOfThree() {
         testFile("cat,hat,hate,hater,hit,car");
         GraphProcessor g = new GraphProcessor();
         g.populateGraph(fileName);
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hater");
         flag = flag || (p.size() != 4);
-        flag = flag || (!p.get(0).equals("CAT"));
-        flag = flag || (!p.get(1).equals("HAT"));
-        flag = flag || (!p.get(2).equals("HATE"));
-        flag = flag || (!p.get(3).equals("HATER"));
-        if (flag) fail("Expected [ CAT,HAT,HATE,HATER ], got [ " 
+        flag = flag || (!p.get(0).equals("cat"));
+        flag = flag || (!p.get(1).equals("hat"));
+        flag = flag || (!p.get(2).equals("hate"));
+        flag = flag || (!p.get(3).equals("hater"));
+        if (flag) fail("Expected [ cat,hat,hate,hater ], got [ " 
         + String.join(",", p) + " ]");
     }
     
@@ -245,7 +245,7 @@ public class GraphProcessorTest {
      * Tests to make sure that the shortest path using the getShortestPath test 
      * in GraphProcessor between two words that have no adjacency returns a -1.
      */
-    public void test_14_pathWithNoPath() {
+    public void test_13_pathWithNoPath() {
         testFile("apple,octopus,drag");
         GraphProcessor g = new GraphProcessor();
         g.populateGraph(fileName);
@@ -259,7 +259,7 @@ public class GraphProcessorTest {
     /**
      * Tests that two words that are not adjacent do not return as adjacent.
      */
-    public void test_15_isAdjacentFalse() {
+    public void test_14_isAdjacentFalse() {
         WordProcessor g = new WordProcessor();
         boolean flag = false;
         flag = g.isAdjacent("cat", "dog");
@@ -271,8 +271,8 @@ public class GraphProcessorTest {
      * Tests that two words that are adjacent, the later with one replacement,
      * are still considered adjacent.
      */
-    public void test_16_isAdjacentReplacement() {
-    	WordProcessor g = new WordProcessor();
+    public void test_15_isAdjacentReplacement() {
+        WordProcessor g = new WordProcessor();
         boolean flag = false;
         flag = !g.isAdjacent("cat", "bat");
         if (flag) fail("Expected: true Got:" + flag);
@@ -283,8 +283,8 @@ public class GraphProcessorTest {
      * Tests that two words that are adjacent, the later with one addition,
      * are still considered adjacent.
      */
-    public void test_17_isAdjacentAddition() {
-    	WordProcessor g = new WordProcessor();
+    public void test_16_isAdjacentAddition() {
+        WordProcessor g = new WordProcessor();
         boolean flag = false;
         flag = !g.isAdjacent("at", "cat");
         if (flag) fail("Expected: true Got:" + flag);
@@ -295,25 +295,11 @@ public class GraphProcessorTest {
      * Tests that two words that are adjacent, the later with one subtraction,
      * are still considered adjacent.
      */
-    public void test_18_isAdjacentSubtraction() {
-    	WordProcessor g = new WordProcessor();
+    public void test_17_isAdjacentSubtraction() {
+        WordProcessor g = new WordProcessor();
         boolean flag = false;
         flag = !g.isAdjacent("cat", "at");
         if (flag) fail("Expected: true Got:" + flag);
     }
-    
-    @Test
-    /**
-     * Tests that 5 words are inserted in the correct order
-     */
-    public void test_18_wordProcessorTest() {
-        try {
-            testFile("cat,hat,hate,hit,car");
-            Stream<String> w = WordProcessor.getWordStream(fileName);
-            //List<String> a = w.collect(Collectors::toList);
-            boolean flag = false;
-        }
-        catch (IOException e) {
-        }   
-    }   
+     
 }
