@@ -199,19 +199,15 @@ public class GraphProcessor {
 	    	ArrayList<heapNode> visited = new ArrayList<heapNode>();		//A list of visited nodes. Words are added
 	    																	//to this list if the node is removed from
 	    																	//the priority queue. 
-	    	int distance = 0;
 	    	minHeap mh = new minHeap(wordIndex.size());						//The priority queue
 	    	String curWord = wordIndex.get(n);								//The starting word of the paths
-	    	heapNode curNode = new heapNode(curWord, 0, null);
+	    	heapNode curNode = new heapNode(curWord, null);
 	    	mh.insert(curNode);
 	    	
 	    	while(!mh.isEmpty()) {											//remove the element with the shortest path
 	    																	//until the priority queue is empty
 	    		heapNode min = mh.getMin();
 	    		visited.add(min);											//mark the node with shortest path visited
-	    		distance++;			//Since the graph is unweighted, the path between every two adjacent nodes would be
-									//1, therefore the distance of the nodes added in current iteration would be 
-	    							//constantly 1 greater than the distance of nodes added in the previous iteration. 
 	    		heapNode[] nodeList = mh.getList();
 	    		for(heapNode i : nodeList) {								//for every item in the priority queue
 	    			Iterable<String> neighbor = graph.getNeighbors(i.word);	//add all neighbors that are not marked 
@@ -225,11 +221,12 @@ public class GraphProcessor {
 								continue point;
 	    				}
 	    				heapNode oldWord = mh.findNode(newWord);
+	    				heapNode newWordNode = new heapNode(newWord, i);
 	    				if(oldWord == null)
-	    					mh.insert(new heapNode(newWord,distance,i));
+	    					mh.insert(new heapNode(newWord,i));
 	    				else
-	    					if(oldWord.distance > distance)				//update the word in queue if a shorter path is
-	    						oldWord.setDistance(i, distance);		//found (not expected in this program since
+	    					if(oldWord.distance > newWordNode.distance)	//update the word in queue if a shorter path is
+	    						oldWord.setDistance(i);					//found (not expected in this program since
 	    																//the distance is continuously increasing)
 	    			}
 	    		}
@@ -424,10 +421,10 @@ public class GraphProcessor {
     	 * @param b	The distance of this node
     	 * @param an	The previous heapNode to this heapNode
     	 */
-    	public heapNode(String a, int b, heapNode an) {
-    		distance = b;
+    	public heapNode(String a, heapNode an) {
     		word = a;
     		ances = an;
+    		distance = an == null? 0:1+an.distance;	//since this is an unweighted graph, the edge weight is always 1
     	}
     	
     	/**
@@ -435,8 +432,8 @@ public class GraphProcessor {
     	 * @param an	The new heapNode to this current node on the shortest path. 
     	 * @param val	The distance from the starting word to the current word. 
     	 */
-    	public void setDistance(heapNode an, int val) {
-    		distance = val;
+    	public void setDistance(heapNode an) {
+    		distance = 1+an.distance;
     		ances = an;
     	}
     	
