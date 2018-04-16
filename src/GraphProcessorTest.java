@@ -1,3 +1,11 @@
+
+//Assignment Name: P4 Dictionary Graph
+//File Name: GraphProcessorTest.java
+//Author: X-Team 67
+//Due Date: Apr 16, 2018
+//Other Source: -
+//Known Bugs: None
+
 import static org.junit.Assert.*;
 
 import java.io.File;
