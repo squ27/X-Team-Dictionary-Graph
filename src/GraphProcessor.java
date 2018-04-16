@@ -143,8 +143,8 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
-    	word1 = word1.toLowerCase();
-    	word2 = word2.toLowerCase();
+    	word1 = word1.toUpperCase();
+    	word2 = word2.toUpperCase();
     	if(word1.equals(word2)) return new ArrayList<String>();	//if two words equal, return an empty list
     	
     	int index1 = wordIndex.indexOf(word1);

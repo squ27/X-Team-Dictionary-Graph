@@ -194,9 +194,9 @@ public class GraphProcessorTest {
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hat");
         flag = flag || (p.size() != 2);
-        flag = flag || (!p.get(0).equals("cat"));
-        flag = flag || (!p.get(1).equals("hat"));
-        if (flag) fail("Expected [ cat,hat ], got [ " + String.join(",", p) + " ]");
+        flag = flag || (!p.get(0).equals("CAT"));
+        flag = flag || (!p.get(1).equals("HAT"));
+        if (flag) fail("Expected [ CAT,HAT ], got [ " + String.join(",", p) + " ]");
     }
     
     @Test
@@ -212,10 +212,10 @@ public class GraphProcessorTest {
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hate");
         flag = flag || (p.size() != 3);
-        flag = flag || (!p.get(0).equals("cat"));
-        flag = flag || (!p.get(1).equals("hat"));
-        flag = flag || (!p.get(2).equals("hate"));
-        if (flag) fail("Expected [ cat,hat,hate ], got [ " 
+        flag = flag || (!p.get(0).equals("CAT"));
+        flag = flag || (!p.get(1).equals("HAT"));
+        flag = flag || (!p.get(2).equals("HATE"));
+        if (flag) fail("Expected [ CAT,HAT,HATE ], got [ " 
         + String.join(",", p) + " ]");
     }
     
@@ -232,11 +232,11 @@ public class GraphProcessorTest {
         boolean flag = false;
         List<String> p = g.getShortestPath("cat", "hater");
         flag = flag || (p.size() != 4);
-        flag = flag || (!p.get(0).equals("cat"));
-        flag = flag || (!p.get(1).equals("hat"));
-        flag = flag || (!p.get(2).equals("hate"));
-        flag = flag || (!p.get(3).equals("hater"));
-        if (flag) fail("Expected [ cat,hat,hate,hater ], got [ " 
+        flag = flag || (!p.get(0).equals("CAT"));
+        flag = flag || (!p.get(1).equals("HAT"));
+        flag = flag || (!p.get(2).equals("HATE"));
+        flag = flag || (!p.get(3).equals("HATER"));
+        if (flag) fail("Expected [ CAT,HAT,HATE,HATER ], got [ " 
         + String.join(",", p) + " ]");
     }
     
