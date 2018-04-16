@@ -1,3 +1,11 @@
+//Assignment Name: P4 Dictionary Graph
+//File Name: Graph.java
+//Author: X-Team 67
+//Due Date: Apr 16, 2018
+//Other Source: -
+//Known Bugs: None
+
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
