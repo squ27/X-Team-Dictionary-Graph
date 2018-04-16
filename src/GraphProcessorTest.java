@@ -268,11 +268,14 @@ public class GraphProcessorTest {
     
     @Test
     /**
-     * Tests that two words that are adjacent, the later with one subtraction,
+     * Tests that two words that are adjacent, the later with one replacement,
      * are still considered adjacent.
      */
     public void test_16_isAdjacentReplacement() {
-        
+    	WordProcessor g = new WordProcessor();
+        boolean flag = false;
+        flag = !g.isAdjacent("cat", "bat");
+        if (flag) fail("Expected: true Got:" + flag);
     }
     
     @Test
@@ -281,7 +284,10 @@ public class GraphProcessorTest {
      * are still considered adjacent.
      */
     public void test_17_isAdjacentAddition() {
-        
+    	WordProcessor g = new WordProcessor();
+        boolean flag = false;
+        flag = !g.isAdjacent("at", "cat");
+        if (flag) fail("Expected: true Got:" + flag);
     }
     
     @Test
@@ -290,11 +296,16 @@ public class GraphProcessorTest {
      * are still considered adjacent.
      */
     public void test_18_isAdjacentSubtraction() {
-        
+    	WordProcessor g = new WordProcessor();
+        boolean flag = false;
+        flag = !g.isAdjacent("cat", "at");
+        if (flag) fail("Expected: true Got:" + flag);
     }
     
     @Test
-    // gives 5 words and makes sure they come out in the right order
+    /**
+     * Tests that 5 words are inserted in the correct order
+     */
     public void test_18_wordProcessorTest() {
         try {
             testFile("cat,hat,hate,hit,car");
